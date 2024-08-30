@@ -32,6 +32,8 @@ export default function TextForm(props) {
         console.error("Failed to Copy!", err);
         setError("Failed to copy text. Try again.");
       });
+     
+
     } else {
       setError("Textbox is empty. Please enter some text to copy."); // Set error message
     }
@@ -82,7 +84,7 @@ export default function TextForm(props) {
         <button className="btn btn-primary mx-1" onClick={handelUpperCase}>Convert to UpperCase</button>
         <button className="btn btn-primary mx-1" onClick={handelLowerCase}>Convert to Lower Case</button>
         <button className="btn btn-primary mx-1" onClick={clearTextBox}>Clear</button>
-        <button className="btn btn-primary mx-1" onClick={handelCopyText}>Copy</button>
+        <button className="btn btn-primary mx-1" id="box" onClick={handelCopyText}>Copy</button>
         {copied && <span style={{ color: "green", marginLeft: "10px" }}>Text Copied!</span>}
       </div>
 
