@@ -1,50 +1,45 @@
-import { useState } from "react";
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function TextForm(props) {
+  const [text, setText] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState("");
 
-  const handelUpperCase = () => {
+  const handleUpperCase = () => {
     let newText = text.toUpperCase();
     setText(newText);
   };
 
-  const handelLowerCase = () => {
+  const handleLowerCase = () => {
     let lowerCaseText = text.toLowerCase();
     setText(lowerCaseText);
   };
 
   const clearTextBox = () => {
-    setText(""); // Clear the text
-    setError(""); // Clear any existing error message
+    setText("");
+    setError("");
   };
 
-  const [copied, setCopied] = useState(false);
-  const [error, setError] = useState(""); // State to manage error message
-
-  const handelCopyText = () => {
-    if (text.length > 0) { // Check if there is text to copy
+  const handleCopyText = () => {
+    if (text.length > 0) {
       navigator.clipboard.writeText(text).then(() => {
-        setCopied(true); // Set copied state to true
-        setError(""); // Clear any previous error
-        setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+        setCopied(true);
+        setError("");
+        setTimeout(() => setCopied(false), 2000);
       },
       (err) => {
         console.error("Failed to Copy!", err);
         setError("Failed to copy text. Try again.");
       });
-     
-
     } else {
-      setError("Textbox is empty. Please enter some text to copy."); // Set error message
+      setError("Textbox is empty. Please enter some text to copy.");
     }
   };
 
-  const handelOnChange = (event) => {
-    setText(event.target.value); // Update the text state
-    setError(""); // Clear error message when text changes
+  const handleOnChange = (event) => {
+    setText(event.target.value);
+    setError("");
   };
-
-  const [text, setText] = useState("");
 
   const wordCount = text.trim().length > 0 ? text.trim().split(/\s+/).length : 0;
 
@@ -56,39 +51,43 @@ export default function TextForm(props) {
     for (let char of lowerCaseStr) {
       if (/[aeiou]/.test(char)) {
         vowels++;
-      } else if (/[bcdfghjklmnpqrstvwxyz]/.test(char)) { // Only count consonants
+      } else if (/[bcdfghjklmnpqrstvwxyz]/.test(char)) {
         consonants++;
       }
     }
-    return { vowels, consonants }; // Return as an object
+    return { vowels, consonants };
   };
 
   const { vowels, consonants } = countVowelConsonant(text);
 
   return (
     <>
-      <div className="container">
+      <div className="container" style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
         <div className="mb-3 my-3">
           <h1>{props.heading}</h1>
           <label htmlFor="myBox" className="form-label"></label>
-          <textarea 
-            className={`form-control ${error ? 'is-invalid' : ''}`} 
-            value={text} 
-            onChange={handelOnChange} 
-            id="exampleFormControlTextarea1" 
-            rows="6" 
+          <textarea
+            className={`form-control ${error ? 'is-invalid' : ''}`}
+            value={text}
+            onChange={handleOnChange}
+            id="exampleFormControlTextarea1"
+            rows="6"
             placeholder="Enter Text"
+            style={{
+              backgroundColor: props.mode === 'dark' ? '#333' : 'white',
+              color: props.mode === 'dark' ? 'white' : 'black',
+            }}
           ></textarea>
-          {error && <div className="invalid-feedback">{error}</div>} {/* Display error */}
+          {error && <div className="invalid-feedback">{error}</div>}
         </div>
-        <button className="btn btn-primary mx-1" onClick={handelUpperCase}>Convert to UpperCase</button>
-        <button className="btn btn-primary mx-1" onClick={handelLowerCase}>Convert to Lower Case</button>
+        <button className="btn btn-primary mx-1" onClick={handleUpperCase}>Convert to UpperCase</button>
+        <button className="btn btn-primary mx-1" onClick={handleLowerCase}>Convert to Lower Case</button>
         <button className="btn btn-primary mx-1" onClick={clearTextBox}>Clear</button>
-        <button className="btn btn-primary mx-1" id="box" onClick={handelCopyText}>Copy</button>
+        <button className="btn btn-primary mx-1" id="box" onClick={handleCopyText}>Copy</button>
         {copied && <span style={{ color: "green", marginLeft: "10px" }}>Text Copied!</span>}
       </div>
 
-      <div className="container my-2">
+      <div className="container my-2" style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
         <h1>Your Text Summary</h1>
         <p>{wordCount} words and {text.length} characters</p>
         <p>{0.008 * wordCount} minutes to read the text</p>

@@ -6,14 +6,25 @@ import TextForm from './Components/TextForm'
 import About from './Components/About'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [Mode, setMode]= useState('light')
+
+  const toggleMode=()=>{
+
+    if(Mode==='light'){
+      setMode('dark');
+      document.body.style.background='gray';
+    }else{
+      setMode('light');
+      document.body.style.background='white';
+    }
+  }
 
   return (
     <Router>
-      <Navbar Title="TextEditor" Home="Home" />
+      <Navbar Title="TextEditor" Home="Home" mode= {Mode} toggleMode={toggleMode}/>
       <div className='container'>
         <Routes>
-          <Route path="/" element={<TextForm heading="Enter Your Text" />} />
+          <Route path="/" element={<TextForm heading="Enter Your Text" />} mode= {Mode}/>
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
