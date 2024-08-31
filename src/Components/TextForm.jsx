@@ -8,16 +8,19 @@ export default function TextForm(props) {
   const handleUpperCase = () => {
     let newText = text.toUpperCase();
     setText(newText);
+    props.showAlert("Converted to UpperCase !!!", "success");
   };
 
   const handleLowerCase = () => {
     let lowerCaseText = text.toLowerCase();
     setText(lowerCaseText);
+    props.showAlert("Converted to LowerrCase !!!", "success");
   };
 
   const clearTextBox = () => {
     setText("");
-    setError("");
+    // setError("");
+    props.showAlert("Text Cleared !!!", "success");
   };
 
   const handleCopyText = () => {
@@ -26,6 +29,7 @@ export default function TextForm(props) {
         setCopied(true);
         setError("");
         setTimeout(() => setCopied(false), 2000);
+        props.showAlert("Copide !!!", "success");
       },
       (err) => {
         console.error("Failed to Copy!", err);
